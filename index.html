@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Editor de código ultra ligero que funciona en navegadores y equipos de bajos recursos">
+    <title>LightCode - Editor de código ligero</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="app.js" as="script">
+    <!-- Favicon SVG ligero -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-10 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+</head>
+<body>
+    <!-- Modo ahorro de energía -->
+    <div id="power-saver" class="power-saver hidden">
+        <span>Modo ahorro de energía activado</span>
+        <button id="disable-power-saver">Desactivar</button>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Light<span class="logo-code">Code</span></h1>
+                <span class="tagline">Editor de código ultra ligero</span>
+            </div>
+            <nav class="nav">
+                <button class="nav-toggle" aria-label="Menú">
+                    <span></span><span></span><span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#features">Características</a></li>
+                    <li><a href="#editor">Editor</a></li>
+                    <li><a href="#guide">Guía</a></li>
+                    <li>
+                        <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">
+                            🌙
+                        </button>
+                    </li>
+                    <li>
+                        <button id="power-saver-toggle" class="power-saver-btn" title="Activar modo ahorro">
+                            🔋
+                        </button>
+                    </li>
+                    <li>
+                        <a href="https://github.com" class="github-link" target="_blank" rel="noopener">
+                            <span>GitHub</span> <span class="github-icon">📦</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Sección Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Código sin peso</h2>
+                <p class="hero-description">
+                    Un editor de código que funciona en cualquier dispositivo, incluso con recursos limitados. 
+                    <strong>Menos de 100KB</strong> de recursos iniciales, sin backend requerido.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-value">< 1MB</span>
+                        <span class="stat-label">Tamaño total</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">0ms</span>
+                        <span class="stat-label">Backend latency</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">100%</span>
+                        <span class="stat-label">Frontend</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToEditor()">
+                    Probar editor ahora
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Características -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Diseñado para ser ligero</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Carga instantánea</h3>
+                    <p>Optimizado para cargar en menos de 1 segundo incluso en conexiones 3G</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Sin dependencias pesadas</h3>
+                    <p>0 frameworks pesados, solo JavaScript vanilla y CSS moderno</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔋</div>
+                    <h3>Bajo consumo</h3>
+                    <p>Modo ahorro de energía que reduce animaciones y procesos en segundo plano</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Ejecución local</h3>
+                    <p>Todo funciona en tu navegador, sin necesidad de servidor</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📁</div>
+                    <h3>Autoguardado</h3>
+                    <p>Tu código se guarda automáticamente en tu dispositivo</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Vista previa en vivo</h3>
+                    <p>Ve los cambios de HTML/CSS/JS en tiempo real</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Editor -->
+    <section id="editor" class="editor-section">
+        <div class="container">
+            <h2 class="section-title">Editor integrado</h2>
+            <p class="section-subtitle">Escribe, edita y ve el resultado en tiempo real</p>
+            
+            <div class="editor-container">
+                <!-- Selector de archivos -->
+                <div class="file-tabs">
+                    <button class="file-tab active" data-file="index.html">index.html</button>
+                    <button class="file-tab" data-file="style.css">style.css</button>
+                    <button class="file-tab" data-file="script.js">script.js</button>
+                    <div class="file-actions">
+                        <button id="run-code" class="run-button" title="Ejecutar código">
+                            ▶ Ejecutar
+                        </button>
+                        <button id="save-code" class="save-button" title="Guardar proyecto">
+                            💾 Guardar
+                        </button>
+                        <button id="export-zip" class="export-button" title="Exportar como ZIP">
+                            📦 Exportar
+                        </button>
+                        <button id="reset-code" class="reset-button" title="Restablecer código">
+                            ↩ Restablecer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel del editor -->
+                <div class="editor-layout">
+                    <div class="editor-panel">
+                        <div class="editor-header">
+                            <span id="current-file">index.html</span>
+                            <div class="editor-stats">
+                                <span id="line-count">Línea: 1</span>
+                                <span id="char-count">Caracteres: 0</span>
+                            </div>
+                        </div>
+                        <textarea 
+                            id="code-editor" 
+                            class="code-editor"
+                            spellcheck="false"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                        ></textarea>
+                    </div>
+
+                    <!-- Vista previa -->
+                    <div class="preview-panel">
+                        <div class="preview-header">
+                            <span>Vista previa</span>
+                            <button id="refresh-preview" class="refresh-button" title="Actualizar vista previa">
+                                🔄
+                            </button>
+                        </div>
+                        <iframe 
+                            id="preview-frame" 
+                            class="preview-frame"
+                            sandbox="allow-scripts allow-same-origin"
+                            title="Vista previa del código"
+                        ></iframe>
+                        <div class="console-panel">
+                            <div class="console-header">Consola</div>
+                            <div id="console-output" class="console-output"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles del editor -->
+                <div class="editor-controls">
+                    <div class="control-group">
+                        <label for="font-size">Tamaño fuente:</label>
+                        <select id="font-size" class="font-select">
+                            <option value="12">12px</option>
+                            <option value="14" selected>14px</option>
+                            <option value="16">16px</option>
+                            <option value="18">18px</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="tab-size">Tabulación:</label>
+                        <select id="tab-size" class="tab-select">
+                            <option value="2">2 espacios</option>
+                            <option value="4" selected>4 espacios</option>
+                            <option value="8">8 espacios</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="auto-save" checked>
+                            Autoguardado
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label>
+                            <input type="checkbox" id="line-numbers" checked>
+                            Números de línea
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Guía -->
+    <section id="guide" class="guide">
+        <div class="container">
+            <h2 class="section-title">Guía rápida</h2>
+            <div class="guide-content">
+                <div class="guide-step">
+                    <h3>1. Escribe tu código</h3>
+                    <p>Usa las pestañas para cambiar entre HTML, CSS y JavaScript</p>
+                </div>
+                <div class="guide-step">
+                    <h3>2. Ve los cambios en vivo</h3>
+                    <p>La vista previa se actualiza automáticamente al guardar</p>
+                </div>
+                <div class="guide-step">
+                    <h3>3. Guarda tu trabajo</h3>
+                    <p>Tu código se guarda automáticamente en tu navegador</p>
+                </div>
+                <div class="guide-step">
+                    <h3>4. Exporta si lo necesitas</h3>
+                    <p>Descarga tu proyecto como archivo ZIP para usarlo fuera de línea</p>
+                </div>
+            </div>
+            <div class="shortcuts">
+                <h3>Atajos de teclado</h3>
+                <div class="shortcuts-grid">
+                    <div class="shortcut">
+                        <kbd>Ctrl + S</kbd>
+                        <span>Guardar código</span>
+                    </div>
+                    <div class="shortcut">
+                        <kbd>Ctrl + R</kbd>
+                        <span>Ejecutar código</span>
+                    </div>
+                    <div class="shortcut">
+                        <kbd>F1</kbd>
+                        <span>Mostrar atajos</span>
+                    </div>
+                    <div class="shortcut">
+                        <kbd>Ctrl + /</kbd>
+                        <span>Comentar línea</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>LightCode</h3>
+                    <p>Editor de código open source y ultra ligero</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" onclick="showPrivacy()">Privacidad</a>
+                    <a href="#" onclick="showTerms()">Términos</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                    <a href="#" onclick="showAbout()">Acerca de</a>
+                </div>
+                <div class="footer-copy">
+                    <p>Hecho con ♥ para la comunidad. Libre de usar y modificar.</p>
+                    <p class="performance-note">
+                        <span id="load-time">Cargando...</span> • 
+                        <span id="memory-usage">Memoria: --</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="storage.js" defer></script>
+    <script src="editor.js" defer></script>
+    <script src="preview.js" defer></script>
+    <script src="theme.js" defer></script>
+    <script src="app.js" defer></script>
+</body>
+</html>
